@@ -1,42 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<title>Social Media Deathmatch</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+	<link href="index.css" rel="stylesheet" type="text/css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css" rel="stylesheet">
 </head>
 <body>
 	<main role="main">
 		
-		<section class="title-screen">
-			<header class="title-screen head">
+		<section class="title-screen-sec section">
+			<header class="title-screen-hd head">
 				
 			</header>
-			<article class="title-screen article">
-				
+			<article class="title-screen-art article">
+				<button class="title-screen-but button">Begin</button>
 			</article>
 			
 		</section>
 		
-		<section class="character-screen">
-			<header class="character-screen head">
+		<section class="character-screen-sec section">
+			<header class="character-screen-hd head">
 				
 			</header>
-			<article class="character-screen article">
-				
+			<article class="character-screen-art article">
+				<div class="character-screen-select">
+					
+				</div>
+				<button class="character-screen-but button">Start Fight</button><!-- ^^^will be hidden until both characters are chosen^^^ -->
 			</article>
 
 		</section>
 
-		<section class="results-screen">
-			<header class="results-screen head">
+		<section class="results-screen-sec section">
+			<header class="results-screen-hd head">
 				
 			</header>
-			<article class="results-screen article">
-				
+			<article class="results-screen-art article">
+				<button class="results-screen-but button">Fight Again</button>
 			</article>
 			
 		</section>
 
 	</main>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="index.js"></script>
 </body>
 </html>
