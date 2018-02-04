@@ -1,12 +1,21 @@
-const twitterUserUrl = "https://api.twitter.com/1.1/users/lookup.json"
+const RESHUFLE_DEK = "https://deckofcardsapi.com/api/deck/k4kl0ljiy27t/shuffle/";
+const DRW_CRD = "https://deckofcardsapi.com/api/deck/k4kl0ljiy27t/draw/?count=2";
+let villian = null;
+let hero = null;
 
-function getDataFromApi(searchTerm, callback) {
+function reshufleDeck() {
   const settings = {
-    url: twitterUserUrl,
-    // data: {
-    //   q: `${searchTerm} in:name`,
-    //   per_page: 5
-    // },
+    url: RESHUFLE_DEK,
+    dataType: 'json',
+    type: 'GET'
+  };
+
+  $.ajax(settings);
+}
+
+function drawCard(callback) {
+  const settings = {
+    url: DRW_CRD,
     dataType: 'json',
     type: 'GET',
     success: callback
@@ -15,34 +24,54 @@ function getDataFromApi(searchTerm, callback) {
   $.ajax(settings);
 }
 
-function authKeyTwit () {
-  const keySecretTwit = 'QTFXwNrFqFS8UMfYzGOPSFd7C:i8r1ilkKWSuCQd4VSIABUE8W0wICAfQl2si88e3IhYVz3L8UxG'
-  const twitAuth = 'https://api.twitter.com/oauth2/token'
-  const encode = btoa(keySecretTwit)
-  const settingS = {
-    url: twitAuth,
-    type: 'POST',
-    dataType: 'json',
-    headers: {"Authorization": "Basic " + encode,
-    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-    "Access-Control-Allow-Origin": "*"},
-    data: 'grant_type=client_credentials',
-    success: parseToken
-  }
-  $.ajax(settingS);
+function intialWar() {
+  $('.title-screen-but').click(function(){
+    $('.title-screen-sec').addClass('hidden');
+    $('.char-select-sec').removeClass('hidden');
+    reshufleDeck();
+  })
+  $('.house-div').click(function(event){
+    $(event.target).find('.ul').removeClass('hidden')
+  })
 }
 
-function parseToken (data) {
+
+function charSelect() {
+  $('.char-select-but').click(function(){
+    $('.char-select-sec').addClass('hidden');
+    $('.game-area-sec').removeClass('hidden');
+    })
+}
+
+
+function testCall(data) {
   console.log(data)
-}
+  let cards = data.cards;
+  let cardsVal = cards.map(function (card){
+    if (card.value === "ACE") {
+      return 14;
+    } else if (card.value === "KING") {
+      return 13;
+    } else if (card.value === "QUEEN") {
+      return 12;
+    } else if (card.value === "JACK") {
+      return 11;
+    } else {
+      return parseInt(card.value);
+    }
+  })
+  villian = cardsVal[0]
+  hero = cardsVal[1]
+  if (hero > villian){
+    console.log("win")
+  } else if (villian > hero) {
+    console.log("Lose")
+  } else {
+    console.log("tie")
+  }
+ }
 
-function loadTwitterData () {
-  authKeyTwit()
-  //getDataFromApi(null, testCallBack)
-}
 
-function testCallBack (data) {
-  console.log(data);
-}
 
-loadTwitterData()
+intialWar()
+

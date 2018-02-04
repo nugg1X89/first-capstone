@@ -1,0 +1,9 @@
+.title-screen-sec {
+	background-image: url("https://i.pinimg.com/originals/5d/df/14/5ddf147fc1b43b812fc76c143be8bab4.jpg");
+	background-repeat: no-repeat;
+	background-size: 100%;
+}
+
+.hidden {
+	display: none;
+}
