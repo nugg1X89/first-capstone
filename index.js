@@ -1,5 +1,28 @@
 const RESHUFLE_DEK = "https://deckofcardsapi.com/api/deck/k4kl0ljiy27t/shuffle/";
 const DRW_CRD = "https://deckofcardsapi.com/api/deck/k4kl0ljiy27t/draw/?count=2";
+const housePick = "https://www.anapioficeandfire.com/api/houses/"
+const charPick = "https://www.anapioficeandfire.com/api/characters/"
+let charSel = [{
+  house: function houses(houseId) {
+  const settings = {
+    url: housePick`${houseId}`,
+    dataType: 'json',
+    type: 'GET',
+  };
+
+  $.ajax(settings);
+},
+char : function chars(charId) {
+  const settings = {
+    url: charPick`${charId}`,
+    dataType: 'json',
+    type: 'GET',
+  };
+
+  $.ajax(settings);
+}
+
+}];
 let villian = null;
 let hero = null;
 
@@ -30,11 +53,27 @@ function intialWar() {
     $('.char-select-sec').removeClass('hidden');
     reshufleDeck();
   })
-  $('.house-div').click(function(event){
-    $(event.target).find('.ul').removeClass('hidden')
+  $('.house-div').on('click', '.house-img', function(event){
+    $('.house-div .ul').addClass('hidden')
+    console.log('click')
+    $(event.target).siblings('.ul').removeClass('hidden')
+  })
+  $('.li .img').click(function(event){
+    event.stopPropagation()
+    console.log('character Selected')
+    hero = $(event.target)
   })
 }
 
+// function charSelect() {
+//   const settings = {
+//     url: RESHUFLE_DEK,
+//     dataType: 'json',
+//     type: 'GET'
+//   };
+
+//   $.ajax(settings);
+// }
 
 function charSelect() {
   $('.char-select-but').click(function(){
@@ -71,7 +110,7 @@ function testCall(data) {
   }
  }
 
-
+const character = {};
 
 intialWar()
 
