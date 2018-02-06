@@ -2,29 +2,41 @@ const RESHUFLE_DEK = "https://deckofcardsapi.com/api/deck/k4kl0ljiy27t/shuffle/"
 const DRW_CRD = "https://deckofcardsapi.com/api/deck/k4kl0ljiy27t/draw/?count=2";
 const housePick = "https://www.anapioficeandfire.com/api/houses/"
 const charPick = "https://www.anapioficeandfire.com/api/characters/"
-let charSel = [{
-  house: function houses(houseId) {
+function houseApi(houseId, callback) {
   const settings = {
-    url: housePick`${houseId}`,
+    url: `${housePick}${houseId}`,
     dataType: 'json',
     type: 'GET',
-  };
-
-  $.ajax(settings);
-},
-char : function chars(charId) {
-  const settings = {
-    url: charPick`${charId}`,
-    dataType: 'json',
-    type: 'GET',
+    success: callback
   };
 
   $.ajax(settings);
 }
 
-}];
-let villian = null;
-let hero = null;
+function charsApi(charId, callback) {
+  const settings = {
+    url: `${charPick}${charId}`,
+    dataType: 'json',
+    type: 'GET',
+    success: callback
+  };
+
+  $.ajax(settings);
+}
+
+let villian = {
+  name: null,
+  img: null,
+  houseName: null,
+  houseImg: null
+};
+
+let hero = {
+  name: null,
+  img: null,
+  houseName: null,
+  houseImg: null
+};
 
 function reshufleDeck() {
   const settings = {
@@ -55,25 +67,27 @@ function intialWar() {
   })
   $('.house-div').on('click', '.house-img', function(event){
     $('.house-div .ul').addClass('hidden')
-    console.log('click')
     $(event.target).siblings('.ul').removeClass('hidden')
   })
-  $('.li .img').click(function(event){
+  $('.char').click(function(event){
     event.stopPropagation()
-    console.log('character Selected')
-    hero = $(event.target)
+    hero.img = $(event.target).attr('src')
+    hero.houseImg = $(event.target).closest('.house-div').find('.house-img').attr('src')
+    heroId = $(event.currentTarget).attr('id');
+    houseId = $(event.target).closest('.house-div').attr('id')
+    charsApi(heroId, processHero)
+    houseApi(houseId, processHouse)
   })
 }
 
-// function charSelect() {
-//   const settings = {
-//     url: RESHUFLE_DEK,
-//     dataType: 'json',
-//     type: 'GET'
-//   };
+function processHouse(response) {
+  hero.houseName = response.name
+  console.log(hero)
+}
 
-//   $.ajax(settings);
-// }
+function processHero(response) {
+  hero.name = response.name
+}
 
 function charSelect() {
   $('.char-select-but').click(function(){
@@ -84,7 +98,6 @@ function charSelect() {
 
 
 function testCall(data) {
-  console.log(data)
   let cards = data.cards;
   let cardsVal = cards.map(function (card){
     if (card.value === "ACE") {
@@ -109,8 +122,6 @@ function testCall(data) {
     console.log("tie")
   }
  }
-
-const character = {};
 
 intialWar()
 
