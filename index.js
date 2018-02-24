@@ -1,7 +1,8 @@
 const RESHUFLE_DEK = "https://deckofcardsapi.com/api/deck/k4kl0ljiy27t/shuffle/";
-const DRW_CRD = "https://deckofcardsapi.com/api/deck/k4kl0ljiy27t/draw/?count=2";
+const DRW_CRD = "https://deckofcardsapi.com/api/deck/k4kl0ljiy27t/draw/?count=4";
 const housePick = "https://www.anapioficeandfire.com/api/houses/"
 const charPick = "https://www.anapioficeandfire.com/api/characters/"
+const CRD_BCK = "https://i.imgur.com/qfx2nUf.png"
 
 function houseApi(houseId, callback) {
   const settings = {
@@ -26,6 +27,7 @@ function charsApi(charId, callback) {
 }
 
 let villain = {
+  //change villian to the night king
   name: "Darth Vader",
   img: "troll",
   houseName: "Sith",
@@ -39,9 +41,7 @@ let hero = {
   houseImg: null
 };
 
-let heroCard = null ;
-
-let villainCard = null ;
+let cardsForPlay = null ;
 
 function reshufleDeck() {
   const settings = {
@@ -109,21 +109,27 @@ function warGame(){
 
 function cardCall(data) {
   let cards = data.cards;
-  let cardsVal = cards.map(function (card){
-    if (card.value === "ACE") {
-      return 14;
-    } else if (card.value === "KING") {
-      return 13;
-    } else if (card.value === "QUEEN") {
-      return 12;
-    } else if (card.value === "JACK") {
-      return 11;
-    } else {
-      return parseInt(card.value);
+  let cardsObj = cards.map(function (card){
+    const newObj = {
+      img: card.image
     }
+    if (card.value === "ACE") {
+      newObj.value = 14;
+    } else if (card.value === "KING") {
+      newObj.value = 13;
+    } else if (card.value === "QUEEN") {
+      newObj.value = 12;
+    } else if (card.value === "JACK") {
+      newObj.value = 11;
+    } else {
+      newObj.value = parseInt(card.value);
+    }
+    return newObj;
   })
-  villainCard = cardsVal[0]
-  heroCard = cardsVal[1]
+  console.log(cardsObj)
+  cardsForPlay = cardsObj
+  
+ 
   $('.game-area-hero-card').html(`<img src='${cards[1].image}'>`)
   console.log(cards[0].image)
   declareWar();
@@ -134,16 +140,68 @@ function declareWar(){
     $('.results-screen-sec').removeClass('hidden')
     $('.game-area-sec').addClass('hidden')
   }) 
-  if (heroCard > villainCard){
-    $('.winner-div').html(`Winner is ${hero.name} <img src='${hero.img}'> of ${hero.houseName} <img src='${hero.houseImg}'>`)
-    $('.loser-div').html(`Loser is ${villain.name} <img src='${villain.img}'> of ${villain.houseName} <img src='${villain.houseImg}'>`)
-  } else if (villainCard > heroCard) {
-    $('.winner-div').html(`Winner is ${villain.name} <img src='${villain.img}'> of ${villain.houseName} <img src='${villain.houseImg}'>`)
-    $('.loser-div').html(`Loser is ${hero.name} <img src='${hero.img}'> of ${hero.houseName} <img src='${hero.houseImg}'>`)
+  if (cardsForPlay[1].value > cardsForPlay[0].value){
+    $('.winner-div').html(`
+      Winner is ${hero.name} 
+      <img src='${hero.img}'> of 
+      ${hero.houseName} <img src='${hero.houseImg}'> 
+      won with <img src = '${cardsForPlay[1].img}'>`)
+    $('.loser-div').html(`
+      Loser is ${villain.name} <img src='${villain.img}'> 
+      of ${villain.houseName} <img src='${villain.houseImg}'> 
+      lose with <img src = '${cardsForPlay[0].img}'>`)
+  } else if (cardsForPlay[1].value < cardsForPlay[0].value) {
+    $('.winner-div').html(`
+      Winner is ${villain.name} <img src='${villain.img}'> 
+      of ${villain.houseName} <img src='${villain.houseImg}'> 
+      won with <img src = '${cardsForPlay[0].img}'>`)
+    $('.loser-div').html(`
+      Loser is ${hero.name} <img src='${hero.img}'> 
+      of ${hero.houseName} <img src='${hero.houseImg}'> 
+      lose with <img src = '${cardsForPlay[1].img}'>`)
   } else {
-    console.log("tie")
+    //on tie add tie cards to header or something
+    if (cardsForPlay[3].value > cardsForPlay[2].value){
+    $('.winner-div').html(`
+      Tie declare War <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> <img src = ${CRD_BCK}>
+      Winner is ${hero.name} <img src='${hero.img}'> 
+       of ${hero.houseName} <img src='${hero.houseImg}'>
+       won with <img src = ${cardsForPlay[3].img}>`)
+    $('.loser-div').html(`
+      <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> <img src = ${CRD_BCK}>  
+      loser is ${villain.name} <img src='${villain.img}'> 
+      of ${villain.houseName} <img src='${villain.houseImg}'> 
+      lose with <img src = ${cardsForPlay[2].img}>`)
+    } else if (cardsForPlay[3].value < cardsForPlay[2].value) {
+    $('.winner-div').html(`
+      Tie declare War <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> 
+      Winner is ${villain.name} <img src='${villain.img}'> 
+      of ${villain.houseName} <img src='${villain.houseImg}'>
+      won with <img src = ${cardsForPlay[2].img}>`)
+    $('.loser-div').html(`
+      <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> 
+      Loser is ${hero.name} <img src='${hero.img}'> of ${hero.houseName} <img src='${hero.houseImg}'>
+      lose with <img src = ${cardsForPlay[3].img}>`)
+    } else {
+      $('.winner-div').html(`Stalemate go back to your respective houses and try again`)
+      $('.loser-div').html(`
+        <img src = ${cardsForPlay[0].img}>
+        <img src = ${CRD_BCK}>
+        <img src = ${CRD_BCK}>
+        <img src = ${CRD_BCK}>
+        <img src = ${cardsForPlay[2].img}
+        ${villain.name} <img src='${villain.img}'>
+        of ${villain.houseName} <img src='${villain.houseImg}'> 
+        <img src = ${cardsForPlay[1].img}>
+        <img src = ${CRD_BCK}> 
+        <img src = ${CRD_BCK}> 
+        <img src = ${CRD_BCK}>
+        <img src = ${cardsForPlay[3].img}>
+        ${hero.name} <img src='${hero.img}'>
+        of ${hero.houseName} <img src='${hero.houseImg}>`)
+    }
   }
- console.log(heroCard, villainCard)
+ console.log(cardsForPlay)
  }
 
 function resetWar(){
@@ -154,6 +212,7 @@ function resetWar(){
     $('.char-select-but').addClass('hidden')
     $('.char-select-confirm1').html(``) 
     villain = {
+      //change villian to the night king
       name: "Darth Vader",
       img: "troll",
       houseName: "Sith",
@@ -165,9 +224,7 @@ function resetWar(){
       houseName: null,
       houseImg: null
       };
-    heroCard = null ;
-    villainCard = null ;
-  })
+    })
 }
 
 resetWar();
