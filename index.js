@@ -2,7 +2,7 @@ const RESHUFLE_DEK = "https://deckofcardsapi.com/api/deck/k4kl0ljiy27t/shuffle/"
 const DRW_CRD = "https://deckofcardsapi.com/api/deck/k4kl0ljiy27t/draw/?count=4";
 const housePick = "https://www.anapioficeandfire.com/api/houses/"
 const charPick = "https://www.anapioficeandfire.com/api/characters/"
-const CRD_BCK = "https://i.imgur.com/qfx2nUf.png"
+const CRD_BCK = '<img src = "https://i.imgur.com/qfx2nUf.png">'
 
 function houseApi(houseId, callback) {
   const settings = {
@@ -122,7 +122,8 @@ function cardCall(data) {
     } else if (card.value === "JACK") {
       newObj.value = 11;
     } else {
-      newObj.value = parseInt(card.value);
+      newObj.value = //0
+       parseInt(card.value);
     }
     return newObj;
   })
@@ -141,61 +142,41 @@ function declareWar(){
     $('.game-area-sec').addClass('hidden')
   }) 
   if (cardsForPlay[1].value > cardsForPlay[0].value){
-    $('.winner-div').html(`
-      Winner is ${hero.name} 
-      <img src='${hero.img}'> of 
-      ${hero.houseName} <img src='${hero.houseImg}'> 
-      won with <img src = '${cardsForPlay[1].img}'>`)
-    $('.loser-div').html(`
-      Loser is ${villain.name} <img src='${villain.img}'> 
-      of ${villain.houseName} <img src='${villain.houseImg}'> 
-      lose with <img src = '${cardsForPlay[0].img}'>`)
+    $('.winner-div').html(winHtml(hero, cardsForPlay[1]))
+    $('.loser-div').html(loseHtml(villain, cardsForPlay[0]))
   } else if (cardsForPlay[1].value < cardsForPlay[0].value) {
-    $('.winner-div').html(`
-      Winner is ${villain.name} <img src='${villain.img}'> 
-      of ${villain.houseName} <img src='${villain.houseImg}'> 
-      won with <img src = '${cardsForPlay[0].img}'>`)
-    $('.loser-div').html(`
-      Loser is ${hero.name} <img src='${hero.img}'> 
-      of ${hero.houseName} <img src='${hero.houseImg}'> 
-      lose with <img src = '${cardsForPlay[1].img}'>`)
+    $('.winner-div').html(winHtml(villain, cardsForPlay[0]))
+    $('.loser-div').html(loseHtml(hero, cardsForPlay[1]))
   } else {
     //on tie add tie cards to header or something
     if (cardsForPlay[3].value > cardsForPlay[2].value){
     $('.winner-div').html(`
-      Tie declare War <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> <img src = ${CRD_BCK}>
-      Winner is ${hero.name} <img src='${hero.img}'> 
-       of ${hero.houseName} <img src='${hero.houseImg}'>
-       won with <img src = ${cardsForPlay[3].img}>`)
+      Tie declare War ${CRD_BCK} ${CRD_BCK} ${CRD_BCK}
+      ${winHtml(hero, cardsForPlay[3])}`)
     $('.loser-div').html(`
-      <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> <img src = ${CRD_BCK}>  
-      loser is ${villain.name} <img src='${villain.img}'> 
-      of ${villain.houseName} <img src='${villain.houseImg}'> 
-      lose with <img src = ${cardsForPlay[2].img}>`)
+      ${CRD_BCK} ${CRD_BCK} ${CRD_BCK}
+      ${loseHtml(villain, cardsForPlay[2])}`)
     } else if (cardsForPlay[3].value < cardsForPlay[2].value) {
     $('.winner-div').html(`
-      Tie declare War <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> 
-      Winner is ${villain.name} <img src='${villain.img}'> 
-      of ${villain.houseName} <img src='${villain.houseImg}'>
-      won with <img src = ${cardsForPlay[2].img}>`)
+      Tie declare War ${CRD_BCK} ${CRD_BCK} ${CRD_BCK}
+      ${winHtml(villain, cardsForPlay[2])}`)
     $('.loser-div').html(`
-      <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> <img src = ${CRD_BCK}> 
-      Loser is ${hero.name} <img src='${hero.img}'> of ${hero.houseName} <img src='${hero.houseImg}'>
-      lose with <img src = ${cardsForPlay[3].img}>`)
+      ${CRD_BCK} ${CRD_BCK} ${CRD_BCK} 
+      ${loseHtml(hero, cardsForPlay[3])}`)
     } else {
       $('.winner-div').html(`Stalemate go back to your respective houses and try again`)
       $('.loser-div').html(`
         <img src = ${cardsForPlay[0].img}>
-        <img src = ${CRD_BCK}>
-        <img src = ${CRD_BCK}>
-        <img src = ${CRD_BCK}>
+        ${CRD_BCK}
+        ${CRD_BCK}
+        ${CRD_BCK}
         <img src = ${cardsForPlay[2].img}
         ${villain.name} <img src='${villain.img}'>
         of ${villain.houseName} <img src='${villain.houseImg}'> 
         <img src = ${cardsForPlay[1].img}>
-        <img src = ${CRD_BCK}> 
-        <img src = ${CRD_BCK}> 
-        <img src = ${CRD_BCK}>
+        ${CRD_BCK} 
+        ${CRD_BCK} 
+        ${CRD_BCK}
         <img src = ${cardsForPlay[3].img}>
         ${hero.name} <img src='${hero.img}'>
         of ${hero.houseName} <img src='${hero.houseImg}>`)
@@ -225,6 +206,21 @@ function resetWar(){
       houseImg: null
       };
     })
+}
+
+function winHtml(winner, card) {
+  return `
+      Winner is ${winner.name} 
+      <img src='${winner.img}'> of 
+      ${winner.houseName} <img src='${winner.houseImg}'> 
+      won with <img src = '${card.img}'>`  
+} 
+
+function loseHtml(loser, card) {
+  return `
+      Loser is ${loser.name} <img src='${loser.img}'> 
+      of ${loser.houseName} <img src='${loser.houseImg}'> 
+      lost with <img src = '${card.img}'>`
 }
 
 resetWar();
