@@ -27,11 +27,10 @@ function charsApi(charId, callback) {
 }
 
 let villain = {
-  //change villian to the night king
-  name: "Darth Vader",
-  img: "troll",
-  houseName: "Sith",
-  houseImg: "lol"
+  name: "The Night King",
+  img: "https://vignette.wikia.nocookie.net/gameofthrones/images/1/1f/Night_King_BTW.jpg/revision/latest?cb=20171013162809",
+  houseName: "The White Walkers",
+  houseImg: "https://vignette.wikia.nocookie.net/gameofthrones/images/e/e0/Walkerhorse3.png/revision/latest?cb=20160811101113"
 };
 
 let hero = {
@@ -122,8 +121,7 @@ function cardCall(data) {
     } else if (card.value === "JACK") {
       newObj.value = 11;
     } else {
-      newObj.value = //0
-       parseInt(card.value);
+      newObj.value = parseInt(card.value);
     }
     return newObj;
   })
