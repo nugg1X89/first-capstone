@@ -1,9 +1,76 @@
+section, article {
+	height: 750px; 
+	width: 1000px;
+	margin: auto;
+}
+
 .title-screen-sec {
 	background-image: url("https://hdqwalls.com/wallpapers/game-of-thrones-all-cast-4k.jpg");
 	background-repeat: no-repeat;
-	background-size: 100%;
+	background-size: cover;
+	background-position: center;
+}
+
+.title-screen-art {
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+}
+
+.house-img, .char-star, .char-lan, .char-gre, .char-tar{
+	height: 200px;
+	width: 200px;
+	object-fit: scale-down;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+.col1, .col2, .results-screen-art{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+
+.char-select-confirm{
+	display: flex;
+	flex-direction: column;
+}
+
+.char-select-confirm1{
+	text-align: center;
+}
+
+.char-select-but, .game-area-but, .results-screen-but{
+	margin: auto;
+	width: 200px;
+	height: 24px;
+	display: block;
+}
+
+.game-area-art, .loser-div, .winner-div{
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	text-align: center;
+}
+
+
+.hero-img, .hero-house, .hero-card, .win-house, .win-person, .win-card, .lose-house, .lose-person, .lose-card, .tie-cards {
+	height: 200px;
+	width: 200px;
+	object-fit: scale-down;
+	margin: auto;
+}
+
+.win-text, .lose-text{
+	margin: auto;
 }
 
 .hidden {
 	display: none;
 }
+
