@@ -4,6 +4,7 @@ const housePick = "https://www.anapioficeandfire.com/api/houses/"
 const charPick = "https://www.anapioficeandfire.com/api/characters/"
 const CRD_BCK = '<img src = "https://i.imgur.com/qfx2nUf.png" class="tie-cards">'
 
+
 function houseApi(houseId, callback) {
   const settings = {
     url: `${housePick}${houseId}`,
@@ -106,6 +107,7 @@ function warGame(){
     <img src='${hero.img}' class='hero-img'> <br> of ${hero.houseName} <br> <img src='${hero.houseImg}' class='hero-house'>`)
  }
 
+
 function cardCall(data) {
   let cards = data.cards;
   let cardsObj = cards.map(function (card){
@@ -127,7 +129,7 @@ function cardCall(data) {
   })
   console.log(cardsObj)
   cardsForPlay = cardsObj
-   
+
   $('.game-area-hero-card').html(`<img src='${cards[1].image}' class='hero-card'>`)
   declareWar();
  }
@@ -188,6 +190,7 @@ function resetWar(){
     $('.house-div .ul').addClass('hidden')
     $('.char-select-but').addClass('hidden')
     $('.char-select-confirm1').html(``) 
+
     hero = {
       name: null,
       img: null,
